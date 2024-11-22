@@ -78,6 +78,31 @@ public class PetService implements PetDao{
 	@Override
 	public List<Pet> getAllPets() {
 		// TODO Auto-generated method stub
+		Connection con = DBConnectUtil.getConnection();
+		PreparedStatement pstmt=null;
+		Pet pt = null;
+		
+		try {
+			pstmt=con.prepareStatement("select * from pets where");
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pt = new Pet(rs.getString("name"),rs.getInt("age"),rs.getString("breed"),rs.getString("dog_breed"),rs.getString("cat_color"));
+			}else {
+				System.out.println("No data available");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("Error while finding pet details");
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("Error occurred while closing connection");
+			}
+		}
+		//return pt;
 		return null;
 	}
 
